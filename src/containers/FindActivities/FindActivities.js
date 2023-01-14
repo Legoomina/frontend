@@ -1,17 +1,35 @@
-import { Grid, Slider, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { Grid, Slider, FormControl, InputLabel, Select, MenuItem, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 
-import { useState } from "react";
+import SearchIcon from '@mui/icons-material/Search';
+
+import { useContext, useState } from "react";
+
+import axios from "axios"
+import UserContext from "../../context/UserContext"
+import { axiosConfig } from "../../utils/axiosConfig"
 
 const FindActivities = () => {
+    const { user } = useContext(UserContext)
+
     const [range, setRange] = useState(20);
     const [category, setCategory] = useState("")
+    const [events, setEvents] = useState([])
+
+    const handleEventsFetch = () => {
+        axios.get(process.env.REACT_APP_API_URL + `/api/events/filter?range=${range}&category=${category}`, axiosConfig(user.accessToken))
+        .then((res) => {
+            setEvents(res.data)
+        })
+    }
+
     return (
         <Box>
             <Grid
                 container
                 columns={{ xs: 12 }}
                 alignItems="center"
+                justifyItems="center"
                 spacing={1}
             >
                 <Grid item xs={4}>
@@ -25,7 +43,7 @@ const FindActivities = () => {
                 <Grid item xs={2}>
                     Radius: {range}
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
                             Category
@@ -42,6 +60,11 @@ const FindActivities = () => {
                             <MenuItem value={"Physics"}>Physics</MenuItem>
                         </Select>
                     </FormControl>
+                </Grid>
+                <Grid item xs={2}>
+                    <IconButton aria-label="find" onClick={handleEventsFetch}>
+                        <SearchIcon />
+                    </IconButton>
                 </Grid>
             </Grid>
         </Box>
