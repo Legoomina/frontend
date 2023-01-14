@@ -18,41 +18,69 @@ const TableComponent = ({ isOpen }) => {
     const left = 50;
 
     const theme = useTheme();
-    const { user } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
 
+    const [location, setLocation] = useState("0.0");
     const [openedModal, setOpenModal] = useState(isOpen);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [teacherBtn, setTeacherBtn] = useState(false);
     const [studentBtn, setStudentBtn] = useState(false);
+    const [submitBtn, setSubmitPressable] = useState(false);
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition((pos) => {
+            setLocation(
+                `@${pos.coords.latitude},${pos.coords.longitude},${pos.coords.longitude}z`
+            );
+
+            setSubmitPressable(true);
+        });
+    }, [location]);
 
     const handleChangesSubmit = async () => {
-        console.log(firstName);
-        console.log(lastName);
-        console.log(user.accessToken);
+        const endpoints = [
+            {
+                url: process.env.REACT_APP_API_URL + "/api/user/name",
+                body: {
+                    firstName: firstName,
+                    lastName: lastName,
+                },
+            },
+            {
+                url: process.env.REACT_APP_API_URL + "/api/user/location",
+                body: {
+                    location: location,
+                },
+            },
+            // {
+            //     url: teacherBtn
+            //         ? process.env.REACT_APP_API_URL + "/api/user/accountType"
+            //         : "",
+            // },
+        ];
 
-        // await axios
-        //     .put(
-        //         "http://localhost:3001/api/user/name",
-        //         {
-        //             firstName: firstName,
-        //             lastName: lastName,
-        //         },
-        //         axiosConfig(user.accessToken)
-        //     )
-        //     .then((res) => {
-        //         console.log(res);
-        //     });
-
-        // setOpenModal(false);
-
-        axios
-            .get(
-                process.env.REACT_APP_API_URL + "/api/user",
-                axiosConfig(user.accessToken)
+        Promise.all(
+            endpoints.map(({ url, body }) =>
+                axios.put(url, body, axiosConfig(user.accessToken))
             )
-            .then((a) => {
-                console.log(a);
+        )
+            .then(
+                axios.spread((...allData) => {
+                    setOpenModal(false);
+                })
+            )
+            .then(
+                setUser((prev) => ({
+                    ...prev,
+                    firstName: firstName,
+                    lastName: lastName,
+                    location: location,
+                    isTeacher: teacherBtn,
+                }))
+            )
+            .catch((err) => {
+                console.log(err);
             });
     };
 
@@ -138,6 +166,7 @@ const TableComponent = ({ isOpen }) => {
                     </Grid>
                     <Button
                         fullWidth
+                        disabled={!submitBtn}
                         variant="outlined"
                         onClick={handleChangesSubmit}
                     >
