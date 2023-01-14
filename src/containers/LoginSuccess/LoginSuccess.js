@@ -1,24 +1,20 @@
-import { useContext } from "react"
-import { Navigate } from "react-router-dom"
-import UserContext from "../../context/UserContext"
+import { useContext, useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import UserContext from "../../context/UserContext";
 
 const LoginSuccess = () => {
-    const params = new URLSearchParams(window.location.search)
-
-    const { setUser } = useContext(UserContext)
+    const params = new URLSearchParams(window.location.search);
+    const navigate = useNavigate();
+    const { setUser } = useContext(UserContext);
 
     setUser((prev) => ({
         ...prev,
         accessToken: params.get("accessToken"),
         refreshToken: params.get("refreshToken"),
-        isUserLoaded: false
-    }))
+        isUserLoaded: false,
+    }));
 
-    return (
-        <Navigate 
-            to="/"
-        />
-    )
-}
+    navigate("/");
+};
 
-export default LoginSuccess
+export default LoginSuccess;
