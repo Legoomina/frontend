@@ -4,6 +4,8 @@ const UserContext = createContext({});
 
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState({
+        isStudent: true,
+        isTeacher: true,
         isLoggedIn: false,
         accesToken: null,
         refreshToken: null,

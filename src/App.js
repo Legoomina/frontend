@@ -14,7 +14,10 @@ import LoginSuccess from "./containers/LoginSuccess/LoginSuccess";
 
 import { axiosConfig } from "./utils/axiosConfig";
 import Menu from "./Menu/Menu";
+import Dashboard from "./containers/Dashboard/Dashboard";
+
 import Register from "./containers/Register/Register";
+
 
 const App = () => {
     const theme = createTheme();
@@ -29,8 +32,8 @@ const App = () => {
 
     const [user, setUser] = useState({
         isLoggedIn: false,
-        isStudent: false,
-        isTeacher: true,
+        isStudent: null,
+        isTeacher: null,
         accessToken: accessTokenLS || null,
         refreshToken: refreshTokenLS || null,
         firstName: null,
@@ -77,6 +80,8 @@ const App = () => {
     return (
         <UserContext.Provider value={{ user, setUser }}>
             <ThemeProvider theme={theme}>
+
+
                 <Routes>
                     <Route path="/login" element={<SignIn />}></Route>
                     <Route path="/register" element={<Register />}></Route>
@@ -84,8 +89,9 @@ const App = () => {
                         path="/login/success"
                         element={<LoginSuccess />}
                     ></Route>
-                    <Route path="/" element={<Menu></Menu>}></Route>
+                    <Route path="/" element={<Menu><Dashboard></Dashboard></Menu>}></Route>
                 </Routes>
+
             </ThemeProvider>
         </UserContext.Provider>
     );
