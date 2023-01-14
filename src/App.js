@@ -16,6 +16,9 @@ import { axiosConfig } from "./utils/axiosConfig";
 import Menu from "./Menu/Menu";
 import Dashboard from "./containers/Dashboard/Dashboard";
 
+import Register from "./containers/Register/Register";
+
+
 const App = () => {
     const theme = createTheme();
     const [accessTokenLS, setAccessTokenLS] = useLocalStorage(
@@ -53,8 +56,6 @@ const App = () => {
 
     useEffect(() => {
         if (!user.isUserLoaded && user.accessToken) {
-            console.log(user);
-            console.log(axiosConfig(user.accessToken));
             axios
                 .get(
                     process.env.REACT_APP_API_URL + "/api/user",
@@ -79,14 +80,18 @@ const App = () => {
     return (
         <UserContext.Provider value={{ user, setUser }}>
             <ThemeProvider theme={theme}>
-                    <Routes>
-                        <Route path="/login" element={<SignIn />}></Route>
-                        <Route
-                            path="/login/success"
-                            element={<LoginSuccess />}
-                        ></Route>
-                        <Route path="/" element={<Menu><Dashboard></Dashboard></Menu>}></Route>
-                    </Routes>
+
+
+                <Routes>
+                    <Route path="/login" element={<SignIn />}></Route>
+                    <Route path="/register" element={<Register />}></Route>
+                    <Route
+                        path="/login/success"
+                        element={<LoginSuccess />}
+                    ></Route>
+                    <Route path="/" element={<Menu><Dashboard></Dashboard></Menu>}></Route>
+                </Routes>
+
             </ThemeProvider>
         </UserContext.Provider>
     );
