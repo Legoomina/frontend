@@ -18,6 +18,19 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import UserContext from "../context/UserContext"
+
+import HomeIcon from '@mui/icons-material/Home';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import SettingsIcon from '@mui/icons-material/Settings';
+import SearchIcon from '@mui/icons-material/Search';
+import CreateIcon from '@mui/icons-material/Create';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -87,6 +100,8 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function Menu({ children }) {
+    const { user } = React.useContext(UserContext)
+    const navigate = useNavigate()
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
@@ -97,6 +112,49 @@ export default function Menu({ children }) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+    const ListItems = {
+        home: {
+            text: "Home",
+            icon: <HomeIcon />,
+            onClick: () => navigate("/"),
+        },
+        register: {
+            text: "Register",
+            icon: <PersonAddIcon />,
+            onClick: () => navigate("/register")
+        },
+        login: {
+            text: "Login",
+            icon: <LoginIcon />,
+            onClick: () => navigate("/login")
+        },
+        logout: {
+            text: "Logout",
+            icon: <LogoutIcon />,
+            onClick: () => {}
+        },
+        myActivities: {
+            text: "My activities",
+            icon: <AssignmentIcon />,
+            onClick: () => {}
+        },
+        findActivities: {
+            text: "Find activities",
+            icon: <SearchIcon />,
+            onClick: () => {}
+        },
+        createActivities: {
+            text: "Create activities",
+            icon: <CreateIcon />,
+            onClick: () => {}
+        },
+        settings: {
+            text: "Settings",
+            icon: <SettingsIcon />,
+            onClick: () => {}
+        }
+    }
 
     return (
         <Box sx={{ display: "flex" }}>
@@ -116,7 +174,7 @@ export default function Menu({ children }) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Mini variant drawer
+                        TutorHub
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -133,14 +191,17 @@ export default function Menu({ children }) {
                 <Divider />
                 <List>
                     {[
-                        "Home",
-                        "My activies",
-                        "Find activies",
-                        "Create activies",
-                        "Settings",
-                    ].map((text, index) => (
+                        ListItems.home,
+                        ...(user.isLoggedIn ? [
+                            ListItems.createActivities,
+                            ListItems.myActivities,
+                            ListItems.findActivities,
+                        ] : [
+
+                        ])
+                    ].map((item) => (
                         <ListItem
-                            key={text}
+                            key={item.text}
                             disablePadding
                             sx={{ display: "block" }}
                         >
@@ -150,6 +211,7 @@ export default function Menu({ children }) {
                                     justifyContent: open ? "initial" : "center",
                                     px: 2.5,
                                 }}
+                                onClick={item.onClick}
                             >
                                 <ListItemIcon
                                     sx={{
@@ -158,14 +220,12 @@ export default function Menu({ children }) {
                                         justifyContent: "center",
                                     }}
                                 >
-                                    {index % 2 === 0 ? (
-                                        <InboxIcon />
-                                    ) : (
-                                        <MailIcon />
-                                    )}
+                                    {
+                                        item.icon
+                                    }
                                 </ListItemIcon>
                                 <ListItemText
-                                    primary={text}
+                                    primary={item.text}
                                     sx={{ opacity: open ? 1 : 0 }}
                                 />
                             </ListItemButton>
@@ -174,9 +234,9 @@ export default function Menu({ children }) {
                 </List>
                 <Divider />
                 <List>
-                    {["All mail", "Trash", "Spam"].map((text, index) => (
+                    {(user.isLoggedIn ? [ListItems.settings, ListItems.logout] : [ListItems.login, ListItems.register]).map((item) => (
                         <ListItem
-                            key={text}
+                            key={item.text}
                             disablePadding
                             sx={{ display: "block" }}
                         >
@@ -186,6 +246,7 @@ export default function Menu({ children }) {
                                     justifyContent: open ? "initial" : "center",
                                     px: 2.5,
                                 }}
+                                onClick={item.onClick}
                             >
                                 <ListItemIcon
                                     sx={{
@@ -194,14 +255,12 @@ export default function Menu({ children }) {
                                         justifyContent: "center",
                                     }}
                                 >
-                                    {index % 2 === 0 ? (
-                                        <InboxIcon />
-                                    ) : (
-                                        <MailIcon />
-                                    )}
+                                    {
+                                        item.icon
+                                    }
                                 </ListItemIcon>
                                 <ListItemText
-                                    primary={text}
+                                    primary={item.text}
                                     sx={{ opacity: open ? 1 : 0 }}
                                 />
                             </ListItemButton>
