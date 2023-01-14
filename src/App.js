@@ -21,7 +21,7 @@ import Calendar from "./containers/Calendar/Calendar";
 import Settings from "./containers/Settings/Settings"
 import Hero from "./containers/Hero/Hero";
 import FindActivities from "./containers/FindActivities/FindActivities";
-import MyActivities from "./containers/MyActivites";
+import MyActivities from "./containers/MyActivites"
 
 
 const App = () => {
