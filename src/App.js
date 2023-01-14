@@ -13,6 +13,7 @@ import UserContext from "./context/UserContext";
 import LoginSuccess from "./containers/LoginSuccess/LoginSuccess";
 
 import { axiosConfig } from "./utils/axiosConfig";
+import Menu from "./Menu/Menu";
 
 const App = () => {
     const theme = createTheme();
@@ -77,15 +78,14 @@ const App = () => {
     return (
         <UserContext.Provider value={{ user, setUser }}>
             <ThemeProvider theme={theme}>
-                <Container component="main" maxWidth="xs">
                     <Routes>
                         <Route path="/login" element={<SignIn />}></Route>
                         <Route
                             path="/login/success"
                             element={<LoginSuccess />}
                         ></Route>
+                        <Route path="/" element={<Menu></Menu>}></Route>
                     </Routes>
-                </Container>
             </ThemeProvider>
         </UserContext.Provider>
     );
