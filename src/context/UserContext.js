@@ -2,6 +2,18 @@ import { createContext, useState } from "react";
 
 const UserContext = createContext({});
 
+const defaultUser = {
+    isStudent: true,
+    isTeacher: true,
+    isLoggedIn: false,
+    accesToken: null,
+    refreshToken: null,
+    firstName: null,
+    lastName: null,
+    id: null,
+    email: null,
+};
+
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState({
         isStudent: true,
@@ -22,5 +34,5 @@ const UserProvider = ({ children }) => {
     );
 };
 
-export { UserProvider };
+export { UserProvider, defaultUser };
 export default UserContext;

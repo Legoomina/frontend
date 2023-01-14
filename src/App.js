@@ -17,7 +17,7 @@ import Menu from "./Menu/Menu";
 import Dashboard from "./containers/Dashboard/Dashboard";
 
 import Register from "./containers/Register/Register";
-
+import MyActivities from "./containers/MyActivites";
 
 const App = () => {
     const theme = createTheme();
@@ -80,8 +80,6 @@ const App = () => {
     return (
         <UserContext.Provider value={{ user, setUser }}>
             <ThemeProvider theme={theme}>
-
-
                 <Routes>
                     <Route path="/login" element={<SignIn />}></Route>
                     <Route path="/register" element={<Register />}></Route>
@@ -89,9 +87,16 @@ const App = () => {
                         path="/login/success"
                         element={<LoginSuccess />}
                     ></Route>
-                    <Route path="/" element={<Menu><Dashboard></Dashboard></Menu>}></Route>
+                    <Route
+                        path="/"
+                        element={
+                            <Menu>
+                                <Dashboard></Dashboard>
+                            </Menu>
+                        }
+                    ></Route>
+                    <Route path="/myactivs" element={<MyActivities />}></Route>
                 </Routes>
-
             </ThemeProvider>
         </UserContext.Provider>
     );
