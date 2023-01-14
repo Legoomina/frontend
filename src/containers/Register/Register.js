@@ -1,40 +1,24 @@
-import {
-    Typography,
-    Box,
-    TextField,
-    Avatar,
-    Button,
-    Grid,
-    Link,
-} from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import GoogleIcon from "@mui/icons-material/Google";
-import { useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
-import UserContext from "../../context/UserContext";
-
+import { Typography, Box, TextField, Button, Grid, Link } from "@mui/material";
 import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const SignIn = () => {
+const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { setUser } = useContext(UserContext);
 
     const navigate = useNavigate();
 
-    const handleLogin = () => {
+    const handleRegister = () => {
         axios
-            .post(process.env.REACT_APP_API_URL + "/api/auth/login", {
+            .post(process.env.REACT_APP_API_URL + "/api/auth/register", {
                 email: email,
                 password: password,
             })
-            .then((res) => {
-                navigate(
-                    `/login/success?accessToken=${res.data.tokens.accessToken}&refreshToken=${res.data.tokens.refreshToken}`
-                );
+            .then(() => {
+                navigate("/login");
             });
     };
-
     return (
         <Box
             sx={{
@@ -44,11 +28,8 @@ const SignIn = () => {
                 alignItems: "center",
             }}
         >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <LockOutlinedIcon />
-            </Avatar>
             <Typography component="h1" variant="h5">
-                Sign in
+                Register
             </Typography>
             <Box component="form">
                 <TextField
@@ -70,7 +51,6 @@ const SignIn = () => {
                     label="Password"
                     type="password"
                     id="password"
-                    autoComplete="current-password"
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <Button
@@ -78,33 +58,20 @@ const SignIn = () => {
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
-                    onClick={handleLogin}
+                    onClick={handleRegister}
                 >
-                    Login
-                </Button>
-                <Button
-                    type="button"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    startIcon={<GoogleIcon />}
-                    component="a"
-                    href={
-                        process.env.REACT_APP_API_URL + "/api/auth/login/google"
-                    }
-                >
-                    Login with Google
+                    Register
                 </Button>
                 <Grid container>
                     <Grid item xs>
-                        {/* <Link href="#" variant="body2">
-                            Forgot password?
-                        </Link> */}
+                        <Link href="/login" variant="body2">
+                            Have an account? Login.
+                        </Link>
                     </Grid>
                     <Grid item>
-                        <Link href="/register" variant="body2">
+                        {/* <Link href="#" variant="body2">
                             Register with your email
-                        </Link>
+                        </Link> */}
                     </Grid>
                 </Grid>
             </Box>
@@ -112,4 +79,4 @@ const SignIn = () => {
     );
 };
 
-export default SignIn;
+export default Register;
