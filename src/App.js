@@ -93,7 +93,7 @@ const App = () => {
                         element={<LoginSuccess />}
                     ></Route>
 
-                    <Route path="/calendar" element={<Menu><Calendar /></Menu>}></Route>
+                    <Route path="/calendar/:id" element={<Menu><Calendar /></Menu>}></Route>
                     <Route path="/settings" element={<Menu><Settings /></Menu>}></Route>
                     <Route path="/find-activities" element={<Menu><FindActivities /></Menu>}></Route>
                     <Route

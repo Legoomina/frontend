@@ -1,54 +1,121 @@
-import { Box } from '@mui/system';
+import { Box } from "@mui/system";
 
 import {
     Scheduler,
     WeekView,
     Appointments,
-  } from '@devexpress/dx-react-scheduler-material-ui';
+    AppointmentTooltip,
+    AppointmentForm,
+} from "@devexpress/dx-react-scheduler-material-ui";
+import { useParams } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import axios from "axios";
+import UserContext from "../../context/UserContext";
+import { axiosConfig } from "../../utils/axiosConfig";
+import Grid from "@mui/material/Grid";
+import { styled } from "@mui/material/styles";
+import Room from "@mui/icons-material/Room";
+import { Button, Link } from "@mui/material";
 
-const data = [
-    {
-      title: 'Website Re-Design Plan',
-      startDate: new Date(2023, 0, 13, 9, 30),
-      endDate: new Date(2023, 0, 13, 11, 0),
-      id: 0,
-      location: 'Room 1',
-    }, {
-      title: 'Book Flights to San Fran for Sales Trip',
-      startDate: new Date(2018, 5, 25, 12, 11),
-      endDate: new Date(2018, 5, 25, 13, 0),
-      id: 1,
-      location: 'Room 1',
-    }, {
-      title: 'Install New Router in Dev Room',
-      startDate: new Date(2018, 5, 25, 14, 30),
-      endDate: new Date(2018, 5, 25, 15, 35),
-      id: 2,
-      location: 'Room 2',
-    }, {
-      title: 'Approve Personal Computer Upgrade Plan',
-      startDate: new Date(2018, 5, 26, 10, 0),
-      endDate: new Date(2018, 5, 26, 11, 0),
-      id: 3,
-      location: 'Room 2',
-    }, {
-      title: 'Final Budget Review',
-      startDate: new Date(2018, 5, 26, 12, 0),
-      endDate: new Date(2018, 5, 26, 13, 35),
-      id: 4,
-      location: 'Room 2',
-    }
-]
+const PREFIX = "Demo";
+
+const classes = {
+    icon: `${PREFIX}-icon`,
+    textCenter: `${PREFIX}-textCenter`,
+    firstRoom: `${PREFIX}-firstRoom`,
+    secondRoom: `${PREFIX}-secondRoom`,
+    thirdRoom: `${PREFIX}-thirdRoom`,
+    header: `${PREFIX}-header`,
+    commandButton: `${PREFIX}-commandButton`,
+};
+
+const StyledGrid = styled(Grid)(() => ({
+    [`&.${classes.textCenter}`]: {
+        textAlign: "center",
+    },
+}));
+
+const StyledRoom = styled(Room)(({ theme: { palette } }) => ({
+    [`&.${classes.icon}`]: {
+        color: palette.action.active,
+    },
+}));
+
+
 
 const Calendar = () => {
+    const { id } = useParams();
+    const [data, setData] = useState([]);
+    const { user } = useContext(UserContext);
+    const handleEventsFetch = () => {
+        axios
+            .get(
+                process.env.REACT_APP_API_URL + "/api/calendar/events/" + id,
+                axiosConfig(user.accessToken)
+            )
+            .then((res) => {
+                setData(
+                    res.data.map((item) => ({
+                        title: item.summary,
+                        id: item.id,
+                        startDate: new Date(item.start.dateTime),
+                        endDate: new Date(item.end.dateTime),
+                    }))
+                );
+            });
+    };
+
+    const Content = ({ children, appointmentData, ...restProps }) => (
+      <AppointmentTooltip.Content
+          {...restProps}
+          appointmentData={appointmentData}
+      >
+          <Grid container alignItems="center">
+              <Button
+                  type="button"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={() => handleAppointment(appointmentData.id)}
+              >
+                  Make appointment
+              </Button>
+          </Grid>
+      </AppointmentTooltip.Content>
+  );
+
+    const handleAppointment = (id) => {
+        axios
+            .post(
+                process.env.REACT_APP_API_URL +
+                    "/api/events/sign?eventId=" +
+                    id,
+                {
+                    eventId: id,
+                },
+                axiosConfig(user.accessToken)
+            )
+            .then((res) => {
+                console.log(res.data);
+            });
+    };
+
+    useEffect(() => {
+        handleEventsFetch();
+    }, []);
+
     return (
         <Box>
             <Scheduler data={data} height={700}>
                 <WeekView startDayHour={6} endDayHour={19} />
                 <Appointments />
+                <AppointmentTooltip contentComponent={Content} />
+                {/* <AppointmentForm 
+                  basicLayoutComponent={BasicLayout}
+                /> */}
             </Scheduler>
         </Box>
-    )
-}
+    );
+};
 
-export default Calendar
+export default Calendar;
