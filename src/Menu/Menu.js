@@ -42,6 +42,8 @@ import { Stack } from "@mui/system";
 import AccountPopover from "../components/AccountPopover/AccountPopover";
 import { faker } from "@faker-js/faker";
 
+import logo from "../../src/sh_logo.png";
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -204,11 +206,12 @@ export default function Menu({ children }) {
                     </IconButton>
                     {/* <Toolbar style={{ marginLeft: "auto" }}> */}
                     <Toolbar>
-                        <SchoolIcon
+                        {/* <SchoolIcon
                             sx={{
                                 mr: 2,
                             }}
-                        />
+                        /> */}
+
                         <Typography
                             variant="h6"
                             noWrap
@@ -222,9 +225,19 @@ export default function Menu({ children }) {
                                 letterSpacing: ".3rem",
                                 color: "inherit",
                                 textDecoration: "none",
+                                alignContent: "center",
+                                alignItems: "center",
                             }}
                         >
-                            TutorHub
+                            <img
+                                src={logo}
+                                alt=""
+                                style={{
+                                    height: "48px",
+                                    marginRight: "16px",
+                                }}
+                            />
+                            ShareKnow
                         </Typography>
                     </Toolbar>
 

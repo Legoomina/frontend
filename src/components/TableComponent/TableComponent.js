@@ -52,11 +52,11 @@ const TableComponent = () => {
                     location: location,
                 },
             },
-            // {
-            //     url: teacherBtn
-            //         ? process.env.REACT_APP_API_URL + "/api/user/accountType"
-            //         : "",
-            // },
+            {
+                url: teacherBtn
+                    ? process.env.REACT_APP_API_URL + "/api/user/accountType"
+                    : "",
+            },
         ];
 
         Promise.all(

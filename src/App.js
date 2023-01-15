@@ -24,7 +24,34 @@ import FindActivities from "./containers/FindActivities/FindActivities";
 import MyActivities from "./containers/MyActivites"
 
 const App = () => {
-    const theme = createTheme();
+    const theme = createTheme({
+        palette: {
+          type: 'dark',
+          primary: {
+            main: '#44694B',
+            light: '#88b58f',
+            dark: '#D2E2D5',
+          },
+          secondary: {
+            main: '#986337',
+          },
+          info: {
+            main: '#68CC7B',
+          },
+          background: {
+            paper: '#3f3e3e',
+            default: '#303030'
+          },
+          text: {
+            primary: '#fff',
+            secondary: 'rgba(255, 255, 255, 0.7)',
+            disabled: 'rgba(255, 255, 255, 0.5)'
+          },
+          error: {
+            main: '#f44336'
+          }
+        },
+      });
     const [accessTokenLS, setAccessTokenLS] = useLocalStorage(
         "accessToken",
         ""
