@@ -16,8 +16,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 
 import UserContext, { defaultUser } from "../context/UserContext";
 
@@ -29,16 +27,8 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SearchIcon from "@mui/icons-material/Search";
 import CreateIcon from "@mui/icons-material/Create";
-
 import SchoolIcon from "@mui/icons-material/School";
-
 import { useNavigate } from "react-router-dom";
-import { Avatar } from "@mui/material";
-
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-
-import MyActivities from "../containers/MyActivites";
-import { Stack } from "@mui/system";
 import AccountPopover from "../components/AccountPopover/AccountPopover";
 import { faker } from "@faker-js/faker";
 
@@ -107,6 +97,18 @@ const Drawer = styled(MuiDrawer, {
         "& .MuiDrawer-paper": closedMixin(theme),
     }),
 }));
+
+// Websocket connection init with backend
+const ws = new WebSocket("ws://localhost:2137");
+
+ws.onmessage = function (event) {
+    const json = JSON.parse(event.data);
+    try {
+        console.log(json);
+    } catch (err) {
+        console.log(err);
+    }
+};
 
 export default function Menu({ children }) {
     const { user, setUser } = React.useContext(UserContext);
