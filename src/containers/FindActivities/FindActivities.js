@@ -22,16 +22,51 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "./find-activities.css";
 import "leaflet/dist/leaflet.css";
 
-import iconMarker from 'leaflet/dist/images/marker-icon.png'
-import iconRetina from 'leaflet/dist/images/marker-icon-2x.png'
-import iconShadow from 'leaflet/dist/images/marker-shadow.png'
+import iconMarker from "leaflet/dist/images/marker-icon.png";
+import iconRetina from "leaflet/dist/images/marker-icon-2x.png";
+import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import L from "leaflet";
 
-const icon = L.icon({ 
-    iconRetinaUrl:iconRetina, 
-    iconUrl: iconMarker, 
-    shadowUrl: iconShadow 
+import { Link } from "react-router-dom";
+
+const icon = L.icon({
+    iconRetinaUrl: "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|abcdef&chf=a,s,ee00FFFF",
+    iconUrl: "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|abcdef&chf=a,s,ee00FFFF",
+    shadowUrl: iconShadow,
 });
+
+const icon2 = L.icon({
+    iconRetinaUrl: "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|2ecc71&chf=a,s,ee00FFFF",
+    iconUrl: "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|2ecc71&chf=a,s,ee00FFFF",
+    shadowUrl: iconShadow,
+});
+
+const processLocation = (locationString) => {
+    return (
+        locationString
+            ?.slice(1, -1)
+            .split(",")
+            .slice(0, 2)
+            .map((e) => e - 0) || [0, 0]
+    );
+};
+
+const EventMarker = ({bio, id, categories, location, firstName, lastName}) => {
+
+    return (
+        <Marker position={processLocation(location)} icon={icon2}>
+            <Popup>
+                <span>{firstName} {lastName} - {bio | ""}</span>
+                <br />
+                <span>{(categories || []).join(", ")}</span>
+                <br />
+                <span>
+                    <Link to={"/calendar/" + id || "0"}>Go to calendar</Link>
+                </span>
+            </Popup>
+        </Marker>
+    );
+};
 
 const FindActivities = () => {
     const { user } = useContext(UserContext);
@@ -45,13 +80,7 @@ const FindActivities = () => {
     const [userCoords, setUserCoords] = useState([0, 0]);
 
     useEffect(() => {
-        setUserCoords(
-            user.location
-                ?.slice(1, -1)
-                .split(",")
-                .slice(0, 2)
-                .map((e) => e - 0) || [0, 0]
-        );
+        setUserCoords(processLocation(user.location));
     }, [user.location]);
 
     useEffect(() => {
@@ -70,7 +99,7 @@ const FindActivities = () => {
                 axiosConfig(user.accessToken)
             )
             .then((res) => {
-                setEvents(res.data);
+                setEvents(res.data.teachers);
             });
     };
 
@@ -121,22 +150,31 @@ const FindActivities = () => {
                     {user.location !== null && userCoords[0] !== 0 ? (
                         <MapContainer
                             center={userCoords}
-                            zoom={15}
+                            zoom={12}
                             scrollWheelZoom={true}
                             whenCreated={setMap}
                         >
-                            {
-                                console.log(userCoords)
-                            }
+                            {/* {console.log(userCoords)} */}
                             <TileLayer
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
                             <Marker position={userCoords} icon={icon}>
-                                <Popup>
-                                    Your coordinates.
-                                </Popup>
+                                <Popup>Your coordinates.</Popup>
                             </Marker>
+                            {
+                                console.log(events)
+                            }
+                            {events.map((e) => (
+                                <EventMarker
+                                    id={e.id}
+                                    location={e.location}
+                                    bio={e.bio}
+                                    key={e.id}
+                                    firstName={e.firstName}
+                                    lastName={e.lastName}
+                                />
+                            ))}
                         </MapContainer>
                     ) : null}
                 </Grid>
