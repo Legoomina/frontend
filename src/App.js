@@ -18,11 +18,10 @@ import Dashboard from "./containers/Dashboard/Dashboard";
 
 import Register from "./containers/Register/Register";
 import Calendar from "./containers/Calendar/Calendar";
-import Settings from "./containers/Settings/Settings"
+import Settings from "./containers/Settings/Settings";
 import Hero from "./containers/Hero/Hero";
 import FindActivities from "./containers/FindActivities/FindActivities";
 import MyActivities from "./containers/MyActivites";
-
 
 const App = () => {
     const theme = createTheme();
@@ -93,9 +92,30 @@ const App = () => {
                         element={<LoginSuccess />}
                     ></Route>
 
-                    <Route path="/calendar" element={<Menu><Calendar /></Menu>}></Route>
-                    <Route path="/settings" element={<Menu><Settings /></Menu>}></Route>
-                    <Route path="/find-activities" element={<Menu><FindActivities /></Menu>}></Route>
+                    <Route
+                        path="/calendar"
+                        element={
+                            <Menu>
+                                <Calendar />
+                            </Menu>
+                        }
+                    ></Route>
+                    <Route
+                        path="/settings"
+                        element={
+                            <Menu>
+                                <Settings />
+                            </Menu>
+                        }
+                    ></Route>
+                    <Route
+                        path="/find-activities"
+                        element={
+                            <Menu>
+                                <FindActivities />
+                            </Menu>
+                        }
+                    ></Route>
                     <Route
                         path="/"
                         element={
