@@ -26,24 +26,55 @@ import MyActivities from "./containers/MyActivites";
 const App = () => {
     const theme = createTheme({
         palette: {
-            type: "dark",
+            type: 'dark',
             primary: {
-                main: "#5b8764",
+              main: '#5b8764',
+              light: '#7b9f83',
+              dark: '#3f5e46',
+              contrastText: '#ffffff',
             },
             secondary: {
-                main: "#986337",
+              main: '#986337',
+              light: 'rgba(172,130,95,0.99)',
+              dark: '#6a4526',
+              contrastText: '#ffffff',
             },
             info: {
-                main: "#68CC7B",
-            },
-            background: {
-                paper: "#3f3e3e",
-                default: "#2d2d2d",
+              main: '#68CC7B',
+              light: '#86d695',
+              dark: '#488e56',
+              contrastText: 'rgba(0,0,0,0.87)',
             },
             text: {
-                primary: "#ffffff",
+              primary: '#ffffff',
+              secondary: 'rgba(255,255,255,0.7)',
+              disabled: 'rgba(255,255,255,0.5)',
+              hint: 'rgba(255,255,255,0.5)',
             },
-        },
+            background: {
+              default: '#303030',
+              paper: '#424242',
+            },
+            error: {
+              main: '#f44336',
+              light: '#f6685e',
+              dark: '#aa2e25',
+              contrastText: '#ffffff',
+            },
+            warning: {
+              main: '#ff9800',
+              light: '#ffac33',
+              dark: '#b26a00',
+              contrastText: 'rgba(0,0,0,0.86)',
+            },
+            success: {
+              main: '#4caf50',
+              light: '#6fbf73',
+              dark: '#357a38',
+              contrastText: 'rgba(0,0,0,0.89)',
+            },
+            divider: 'rgba(255,255,255,0.12)',
+          },
     });
     const [accessTokenLS, setAccessTokenLS] = useLocalStorage(
         "accessToken",

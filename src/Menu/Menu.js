@@ -269,7 +269,7 @@ export default function Menu({ children }) {
                         ListItems.home,
                         ...(user.isLoggedIn
                             ? [
-                                  ListItems.createActivities,
+                                //   ListItems.createActivities,
                                   ListItems.myActivities,
                                   ListItems.findActivities,
                               ]

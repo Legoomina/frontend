@@ -15,7 +15,15 @@ import { axiosConfig } from "../../utils/axiosConfig";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Room from "@mui/icons-material/Room";
-import { Button, CardHeader, Card, Avatar, CardContent, Typography } from "@mui/material";
+import {
+    Button,
+    CardHeader,
+    Card,
+    Avatar,
+    CardContent,
+    Typography,
+    Paper,
+} from "@mui/material";
 
 const PREFIX = "Demo";
 
@@ -125,36 +133,49 @@ const Calendar = () => {
         <Box>
             {teacher !== null ? (
                 <Box>
-                    <Card sx={{
-                        marginY: 2,
-                    }}>
+                    <Card
+                        sx={{
+                            marginY: 2,
+                        }}
+                    >
                         <CardHeader
                             avatar={
-                                <Avatar src={teacher.user.avatar} Avatar sx={{ m: 1, bgcolor: "secondary.main" }}/>
+                                <Avatar
+                                    src={teacher.user.avatar}
+                                    Avatar
+                                    sx={{ m: 1, bgcolor: "secondary.main" }}
+                                />
                             }
                             title={`${teacher.user.firstName} ${teacher.user.lastName}`}
                             subheader={teacher.user.email}
-                        >
-                        </CardHeader>
+                        ></CardHeader>
                         <CardContent>
                             <Typography variant="body2" color="text.secondary">
                                 {teacher.teacher.categories.join(", ")} <br />
-                                {teacher.teacher.accessibilityOptions.join(", ")}
+                                {teacher.teacher.accessibilityOptions.join(
+                                    ", "
+                                )}
                             </Typography>
                         </CardContent>
                     </Card>
                 </Box>
             ) : null}
-            <Scheduler data={data} height={700}>
-                <WeekView startDayHour={6} endDayHour={19} />
-                <Appointments />
-                {showTooltip ? (
-                    <AppointmentTooltip contentComponent={Content} />
-                ) : null}
-                {/* <AppointmentForm 
-                  basicLayoutComponent={BasicLayout}
-                /> */}
-            </Scheduler>
+            <Paper
+            sx={{
+                paddingX: 1,
+                paddingY: 1
+            }}>
+                <Scheduler data={data} height={700}>
+                    <WeekView startDayHour={6} endDayHour={19} />
+                    <Appointments />
+                    {showTooltip ? (
+                        <AppointmentTooltip contentComponent={Content} />
+                    ) : null}
+                    {/* <AppointmentForm 
+                    basicLayoutComponent={BasicLayout}
+                    /> */}
+                </Scheduler>
+            </Paper>
         </Box>
     );
 };

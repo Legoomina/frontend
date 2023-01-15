@@ -7,7 +7,8 @@ import {
     MenuItem,
     IconButton,
 } from "@mui/material";
-import { Box } from "@mui/system";
+// import { Box } from "@mui/system";
+import Paper from '@mui/material/Paper';
 
 import SearchIcon from "@mui/icons-material/Search";
 
@@ -104,7 +105,11 @@ const FindActivities = () => {
     };
 
     return (
-        <Box>
+        <Paper
+            sx={{
+                paddingX: 1
+            }}
+        >
             <Grid
                 container
                 columns={{ xs: 12 }}
@@ -179,7 +184,7 @@ const FindActivities = () => {
                     ) : null}
                 </Grid>
             </Grid>
-        </Box>
+        </Paper>
     );
 };
 
