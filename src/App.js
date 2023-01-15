@@ -21,37 +21,30 @@ import Calendar from "./containers/Calendar/Calendar";
 import Settings from "./containers/Settings/Settings";
 import Hero from "./containers/Hero/Hero";
 import FindActivities from "./containers/FindActivities/FindActivities";
-import MyActivities from "./containers/MyActivites"
+import MyActivities from "./containers/MyActivites";
 
 const App = () => {
     const theme = createTheme({
         palette: {
-          type: 'dark',
-          primary: {
-            main: '#44694B',
-            light: '#88b58f',
-            dark: '#D2E2D5',
-          },
-          secondary: {
-            main: '#986337',
-          },
-          info: {
-            main: '#68CC7B',
-          },
-          background: {
-            paper: '#3f3e3e',
-            default: '#303030'
-          },
-          text: {
-            primary: '#fff',
-            secondary: 'rgba(255, 255, 255, 0.7)',
-            disabled: 'rgba(255, 255, 255, 0.5)'
-          },
-          error: {
-            main: '#f44336'
-          }
+            type: "dark",
+            primary: {
+                main: "#5b8764",
+            },
+            secondary: {
+                main: "#986337",
+            },
+            info: {
+                main: "#68CC7B",
+            },
+            background: {
+                paper: "#3f3e3e",
+                default: "#2d2d2d",
+            },
+            text: {
+                primary: "#ffffff",
+            },
         },
-      });
+    });
     const [accessTokenLS, setAccessTokenLS] = useLocalStorage(
         "accessToken",
         ""
@@ -109,18 +102,32 @@ const App = () => {
     }, [accessTokenLS]);
 
     return (
-        <UserContext.Provider value={{ user, setUser }}>
-            <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+            <UserContext.Provider value={{ user, setUser }}>
                 <Routes>
-                    <Route path="/login" element={<SignIn />}></Route>
-                    <Route path="/register" element={<Register />}></Route>
+                    <Route path="/login" element={<div className="large-form"><SignIn /></div>}></Route>
+                    <Route path="/register" element={<div className="large-form"><Register /></div>}></Route>
                     <Route
                         path="/login/success"
                         element={<LoginSuccess />}
                     ></Route>
 
-                    <Route path="/calendar/:id" element={<Menu><Calendar /></Menu>}></Route>
-                    <Route path="/find-activities" element={<Menu><FindActivities /></Menu>}></Route>
+                    <Route
+                        path="/calendar/:id"
+                        element={
+                            <Menu>
+                                <Calendar />
+                            </Menu>
+                        }
+                    ></Route>
+                    <Route
+                        path="/find-activities"
+                        element={
+                            <Menu>
+                                <FindActivities />
+                            </Menu>
+                        }
+                    ></Route>
                     <Route
                         path="/calendar"
                         element={
@@ -155,8 +162,8 @@ const App = () => {
                     ></Route>
                     <Route path="/myactivs" element={<MyActivities />}></Route>
                 </Routes>
-            </ThemeProvider>
-        </UserContext.Provider>
+            </UserContext.Provider>
+        </ThemeProvider>
     );
 };
 
