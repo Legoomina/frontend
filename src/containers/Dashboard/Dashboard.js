@@ -14,7 +14,6 @@ import AppCurrentSubject from "../../components/AppCurrentSubject/AppCurrentSubj
 import { useTheme } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 import TableComponent from "../../components/TableComponent/TableComponent";
-import useWebSocket from "react-use-websocket";
 
 const Dashboard = ({}) => {
     const navigate = useNavigate();
@@ -36,37 +35,6 @@ const Dashboard = ({}) => {
     const sorted = events.sort((a, b) => {
         return new Date(b.date) - new Date(a.date);
     });
-
-    const ws = new WebSocket("ws://127.0.0.1:2137");
-
-    ws.onopen = (event) => {
-        ws.send(
-            JSON.stringify({
-                namespace: "DISCOVERY",
-                payload: {
-                    email: user.email,
-                    name: user.firstName,
-                    surname: user.lastName,
-                },
-            })
-        );
-    };
-
-    // namespace: "MESSAGE",
-    //             payload: {
-    //                 uuid: destinat,
-    //                 from: user.email,
-    //                 text: content,
-    //             },
-
-    // useWebSocket(WS_URL, {
-    //     onOpen: () => {
-    //         console.log("WebSocket connection established.");
-    //     },
-    //     onConnect: () => {
-    //         console.log("aaa");
-    //     },
-    // });
 
     return (
         <>

@@ -29,6 +29,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SearchIcon from "@mui/icons-material/Search";
 import CreateIcon from "@mui/icons-material/Create";
+import ChatIcon from '@mui/icons-material/Chat';
 
 import SchoolIcon from "@mui/icons-material/School";
 
@@ -181,6 +182,11 @@ export default function Menu({ children }) {
             icon: <SettingsIcon />,
             onClick: () => navigate("/settings"),
         },
+        chat: {
+            text: "Chat",
+            icon: <ChatIcon />,
+            onClick: () => navigate("/chat")
+        }
     };
 
     return (
@@ -272,6 +278,7 @@ export default function Menu({ children }) {
                                 //   ListItems.createActivities,
                                   ListItems.myActivities,
                                   ListItems.findActivities,
+                                  ListItems.chat
                               ]
                             : []),
                     ].map((item) => (

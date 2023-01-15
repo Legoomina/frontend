@@ -170,7 +170,7 @@ const TableComponent = () => {
                         </Grid>
                         <Button
                             fullWidth
-                            disabled={!submitBtn}
+                            // disabled={!submitBtn}
                             variant="outlined"
                             onClick={handleChangesSubmit}
                         >
