@@ -5,7 +5,6 @@ import {
     WeekView,
     Appointments,
     AppointmentTooltip,
-    AppointmentForm,
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { useParams } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
@@ -13,8 +12,6 @@ import axios from "axios";
 import UserContext from "../../context/UserContext";
 import { axiosConfig } from "../../utils/axiosConfig";
 import Grid from "@mui/material/Grid";
-import { styled } from "@mui/material/styles";
-import Room from "@mui/icons-material/Room";
 import {
     Button,
     CardHeader,
@@ -27,27 +24,21 @@ import {
 
 const PREFIX = "Demo";
 
-const classes = {
-    icon: `${PREFIX}-icon`,
-    textCenter: `${PREFIX}-textCenter`,
-    firstRoom: `${PREFIX}-firstRoom`,
-    secondRoom: `${PREFIX}-secondRoom`,
-    thirdRoom: `${PREFIX}-thirdRoom`,
-    header: `${PREFIX}-header`,
-    commandButton: `${PREFIX}-commandButton`,
-};
 
-const StyledGrid = styled(Grid)(() => ({
-    [`&.${classes.textCenter}`]: {
-        textAlign: "center",
-    },
-}));
-
-const StyledRoom = styled(Room)(({ theme: { palette } }) => ({
-    [`&.${classes.icon}`]: {
-        color: palette.action.active,
-    },
-}));
+const Appointment = ({
+    children, style, ...restProps
+  }) => (
+    <Appointments.Appointment
+      {...restProps}
+      style={{
+        ...style,
+        backgroundColor: '#5e9967',
+        borderRadius: '8px',
+      }}
+    >
+      {children}
+    </Appointments.Appointment>
+  );
 
 const Calendar = () => {
     const { id } = useParams();
@@ -167,7 +158,9 @@ const Calendar = () => {
             }}>
                 <Scheduler data={data} height={700}>
                     <WeekView startDayHour={6} endDayHour={19} />
-                    <Appointments />
+                    <Appointments 
+                        appointmentComponent={Appointment}
+                    />
                     {showTooltip ? (
                         <AppointmentTooltip contentComponent={Content} />
                     ) : null}
