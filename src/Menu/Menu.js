@@ -30,7 +30,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import SearchIcon from "@mui/icons-material/Search";
 import CreateIcon from "@mui/icons-material/Create";
 
-import SchoolIcon from '@mui/icons-material/School';
+import SchoolIcon from "@mui/icons-material/School";
 
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@mui/material";
@@ -38,7 +38,9 @@ import { Avatar } from "@mui/material";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 
 import MyActivities from "../containers/MyActivites";
-
+import { Stack } from "@mui/system";
+import AccountPopover from "../components/AccountPopover/AccountPopover";
+import { faker } from "@faker-js/faker";
 
 const drawerWidth = 240;
 
@@ -68,7 +70,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
     alignItems: "center",
     justifyContent: "flex-end",
     padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
 }));
 
@@ -108,7 +109,6 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function Menu({ children }) {
-
     const { user, setUser } = React.useContext(UserContext);
     const navigate = useNavigate();
     const theme = useTheme();
@@ -158,19 +158,16 @@ export default function Menu({ children }) {
             text: "Logout",
             icon: <LogoutIcon />,
             onClick: () => handleLogout(),
-
         },
         myActivities: {
             text: "My activities",
             icon: <AssignmentIcon />,
             onClick: () => handleMyActivites(),
-
         },
         findActivities: {
             text: "Find activities",
             icon: <SearchIcon />,
             onClick: () => navigate("/find-activities"),
-
         },
         createActivities: {
             text: "Create activities",
@@ -188,7 +185,11 @@ export default function Menu({ children }) {
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
             <AppBar position="fixed" open={open}>
-                <Toolbar>
+                <Toolbar
+                    style={{
+                        justifyContent: "space-between",
+                    }}
+                >
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -201,31 +202,42 @@ export default function Menu({ children }) {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <SchoolIcon  sx={{
-                        mr: 2
-                    }} />
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="/"
-                        sx={{
-                            mr: 2,
-                            display: { xs: "flex", md: "flex" },
-                            fontFamily: "monospace",
-                            fontWeight: 700,
-                            letterSpacing: ".3rem",
-                            color: "inherit",
-                            textDecoration: "none",
-                        }}
-                    >
-                        TutorHub
-                    </Typography>
-                    {/* <Box sx={{
-                        flexGrow: 0
-                    }}>
-                        <Avatar alt="" src={user.avatar} />
-                    </Box> */}
+                    {/* <Toolbar style={{ marginLeft: "auto" }}> */}
+                    <Toolbar>
+                        <SchoolIcon
+                            sx={{
+                                mr: 2,
+                            }}
+                        />
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="a"
+                            href="/"
+                            sx={{
+                                mr: 2,
+                                display: { xs: "flex", md: "flex" },
+                                fontFamily: "monospace",
+                                fontWeight: 700,
+                                letterSpacing: ".3rem",
+                                color: "inherit",
+                                textDecoration: "none",
+                            }}
+                        >
+                            TutorHub
+                        </Typography>
+                    </Toolbar>
+
+                    <AccountPopover
+                        imageUrl={faker.image.avatar()}
+                        email={user.email}
+                        firstName={user.firstName}
+                        lastName={user.lastName}
+                        marginRight={12}
+                        homeAction={() => navigate("/")}
+                        settingsAction={() => navigate("/settings")}
+                        logoutAction={handleLogout}
+                    />
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>
