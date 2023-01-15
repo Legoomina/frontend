@@ -16,6 +16,7 @@ const defaultUser = {
 
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState({
+        avatar: null,
         isStudent: true,
         isTeacher: true,
         isLoggedIn: false,
